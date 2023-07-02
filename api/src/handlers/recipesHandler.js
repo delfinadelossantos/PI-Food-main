@@ -14,9 +14,22 @@ const getRecipeHandler = (req, res) => {
   } catch (error) {}
 };
 
-const createRecipeHandler = (req, res) => {
+const createRecipeHandler = async (req, res) => {
+  const { title, image, summary, healthScore, analyzedInstructions, diets } =
+    req.body;
   try {
-  } catch (error) {}
+    const newRecipe = await createRecipeController(
+      title,
+      image,
+      summary,
+      healthScore,
+      analyzedInstructions,
+      diets
+    );
+    res.status(201).json(newRecipe);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {
