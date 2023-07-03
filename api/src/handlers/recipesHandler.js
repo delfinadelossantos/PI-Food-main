@@ -4,9 +4,13 @@ const {
   createRecipeController,
 } = require("../controllers/recipesControllers");
 
-const getRecipesHandler = (req, res) => {
+const getRecipesHandler = async (req, res) => {
   try {
-  } catch (error) {}
+    const recipes = await getRecipesController();
+    res.status(200).json(recipes);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 const getRecipeByIdHandler = async (req, res) => {
