@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const {
   getRecipesHandler,
-  getRecipeHandler,
+  getRecipeByIdHandler,
   createRecipeHandler,
 } = require("../handlers/recipesHandler");
 
@@ -9,7 +9,7 @@ const recipesRouter = Router();
 
 recipesRouter.get("/", getRecipesHandler);
 
-recipesRouter.get("/:id", getRecipeHandler);
+recipesRouter.get("/:id", getRecipeByIdHandler);
 
 recipesRouter.post("/", createRecipeHandler);
 

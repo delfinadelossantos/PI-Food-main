@@ -1,6 +1,6 @@
 const {
   getRecipesController,
-  getRecipeController,
+  getRecipeByIdController,
   createRecipeController,
 } = require("../controllers/recipesControllers");
 
@@ -9,9 +9,14 @@ const getRecipesHandler = (req, res) => {
   } catch (error) {}
 };
 
-const getRecipeHandler = (req, res) => {
+const getRecipeByIdHandler = async (req, res) => {
+  const { id } = req.params;
   try {
-  } catch (error) {}
+    const recipe = await getRecipeByIdController(id);
+    res.status(200).json(recipe);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 const createRecipeHandler = async (req, res) => {
@@ -34,6 +39,6 @@ const createRecipeHandler = async (req, res) => {
 
 module.exports = {
   getRecipesHandler,
-  getRecipeHandler,
+  getRecipeByIdHandler,
   createRecipeHandler,
 };

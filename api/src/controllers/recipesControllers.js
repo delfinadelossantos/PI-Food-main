@@ -1,9 +1,35 @@
 const { Recipe } = require("../db");
+const axios = require("axios");
 const { KEY } = process.env;
 
 const getRecipesController = () => {};
 
-const getRecipeController = () => {};
+//Falta incluir las diets en la búsqueda en bdd
+const getRecipeByIdController = async (id) => {
+  let recipe;
+  if (isNaN(id)) {
+    recipe = await Recipe.findByPk(id);
+  } else {
+    const apiInfo = await axios.get(
+      `https://api.spoonacular.com/recipes/${id}/information?apiKey=${KEY}`
+    );
+    const result = apiInfo.data;
+    let analyzedInstructions =
+      result.analyzedInstructions.length === 0
+        ? "Sorry, this recipe doesn't contain a step by step guide"
+        : result.analyzedInstructions;
+    recipe = {
+      id: result.id,
+      title: result.title,
+      image: result.image,
+      summary: result.summary,
+      healthScore: result.healthScore,
+      diets: result.diets,
+      analyzedInstructions: analyzedInstructions,
+    };
+  }
+  return recipe;
+};
 
 const createRecipeController = async (
   title,
@@ -26,6 +52,6 @@ const createRecipeController = async (
 
 module.exports = {
   getRecipesController,
-  getRecipeController,
+  getRecipeByIdController,
   createRecipeController,
 };
