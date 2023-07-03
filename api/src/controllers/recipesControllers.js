@@ -1,14 +1,19 @@
-const { Recipe } = require("../db");
+const { Recipe, Diet } = require("../db");
 const axios = require("axios");
 const { KEY } = process.env;
 
 const getRecipesController = () => {};
 
-//Falta incluir las diets en la búsqueda en bdd
 const getRecipeByIdController = async (id) => {
   let recipe;
   if (isNaN(id)) {
-    recipe = await Recipe.findByPk(id);
+    recipe = await Recipe.findByPk(id, {
+      include: {
+        model: Diet,
+        attributes: ["name"],
+        through: { attributes: [] },
+      },
+    });
   } else {
     const apiInfo = await axios.get(
       `https://api.spoonacular.com/recipes/${id}/information?apiKey=${KEY}`
