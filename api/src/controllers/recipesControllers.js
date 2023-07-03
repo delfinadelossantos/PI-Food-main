@@ -2,7 +2,28 @@ const { Recipe, Diet } = require("../db");
 const axios = require("axios");
 const { KEY } = process.env;
 
-const getRecipesController = () => {};
+const getRecipesController = async () => {
+  //Tiene que traer: tipo de dietas, origen, healthScore
+  const databaseRecipes = await Recipe.findAll();
+  const apiRecipesRaw = await axios.get(
+    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&addRecipeInformation=true&number=100`
+  );
+
+  const apiRecipes = apiRecipesRaw.data.results.map((recipe) => {
+    const diets =
+      recipe.diets.length !== 0 ? recipe.diets : "No diets available";
+    return {
+      id: recipe.id,
+      title: recipe.title,
+      image: recipe.image,
+      healthScore: recipe.healthScore,
+      diets: diets,
+      createdInDb: false,
+    };
+  });
+
+  return [...databaseRecipes, ...apiRecipes];
+};
 
 const getRecipeByIdController = async (id) => {
   let recipe;
