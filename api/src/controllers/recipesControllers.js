@@ -1,15 +1,14 @@
 const { Recipe, Diet } = require("../db");
 const axios = require("axios");
+const { Op } = require("sequelize");
 const { KEY } = process.env;
 
-const getRecipesController = async () => {
-  //Tiene que traer: tipo de dietas, origen, healthScore
-  const databaseRecipes = await Recipe.findAll();
+const getApiRecipes = async () => {
   const apiRecipesRaw = await axios.get(
     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${KEY}&addRecipeInformation=true&number=100`
   );
 
-  const apiRecipes = apiRecipesRaw.data.results.map((recipe) => {
+  const allApiRecipes = apiRecipesRaw.data.results.map((recipe) => {
     const diets =
       recipe.diets.length !== 0 ? recipe.diets : "No diets available";
     return {
@@ -21,8 +20,29 @@ const getRecipesController = async () => {
       createdInDb: false,
     };
   });
+  return allApiRecipes;
+};
 
+const getRecipesController = async () => {
+  const databaseRecipes = await Recipe.findAll();
+  const apiRecipes = await getApiRecipes();
   return [...databaseRecipes, ...apiRecipes];
+};
+
+const getRecipeByNameController = async (name) => {
+  const recipeName = name.toLowerCase();
+  const dbResults = await Recipe.findAll({
+    where: {
+      title: {
+        [Op.iLike]: `%${recipeName}%`,
+      },
+    },
+  });
+  const apiResults = await getApiRecipes();
+  const filteredResults = apiResults.filter((recipe) =>
+    recipe.title.toLowerCase().includes(recipeName)
+  );
+  return [...filteredResults, ...dbResults];
 };
 
 const getRecipeByIdController = async (id) => {
@@ -78,6 +98,7 @@ const createRecipeController = async (
 
 module.exports = {
   getRecipesController,
+  getRecipeByNameController,
   getRecipeByIdController,
   createRecipeController,
 };

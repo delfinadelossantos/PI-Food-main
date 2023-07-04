@@ -1,13 +1,20 @@
 const {
   getRecipesController,
+  getRecipeByNameController,
   getRecipeByIdController,
   createRecipeController,
 } = require("../controllers/recipesControllers");
 
 const getRecipesHandler = async (req, res) => {
+  const { name } = req.query;
   try {
-    const recipes = await getRecipesController();
-    res.status(200).json(recipes);
+    if (name) {
+      const recipe = await getRecipeByNameController(name);
+      res.status(200).json(recipe);
+    } else {
+      const recipes = await getRecipesController();
+      res.status(200).json(recipes);
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

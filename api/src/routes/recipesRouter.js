@@ -7,6 +7,7 @@ const {
 
 const recipesRouter = Router();
 
+//Incluye búsqueda por query
 recipesRouter.get("/", getRecipesHandler);
 
 recipesRouter.get("/:id", getRecipeByIdHandler);
