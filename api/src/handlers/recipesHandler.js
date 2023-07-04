@@ -8,13 +8,19 @@ const {
 const getRecipesHandler = async (req, res) => {
   const { name } = req.query;
   try {
+    let response;
     if (name) {
       const recipe = await getRecipeByNameController(name);
-      res.status(200).json(recipe);
+      if (recipe.length === 0) {
+        response = `Sorry, there are no recipes with the word ${name}`;
+      } else {
+        response = recipe;
+      }
     } else {
       const recipes = await getRecipesController();
-      res.status(200).json(recipes);
+      response = recipes;
     }
+    res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
