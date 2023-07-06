@@ -92,7 +92,9 @@ const createRecipeController = async (
     healthScore,
     analyzedInstructions,
   });
-  //Falta agregarle DIETS.
+
+  newRecipe.addDiet(diets);
+
   return newRecipe;
 };
 
