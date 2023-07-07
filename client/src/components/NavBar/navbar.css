@@ -1,0 +1,11 @@
+.nav-container {
+  border: solid 1px black;
+  background-color: black;
+  height: 3rem;
+}
+
+.link-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
