@@ -1,0 +1,7 @@
+.card-cont {
+  border: solid 2px black;
+  border-radius: 10px;
+  width: 15rem;
+  height: 15rem;
+  margin: 2rem;
+}
