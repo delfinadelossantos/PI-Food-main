@@ -7,4 +7,14 @@
 
 .form-input-cont {
   margin: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.form-inputs-cont {
+  text-align: center;
+}
+
+.form-p {
+  color: red;
 }
