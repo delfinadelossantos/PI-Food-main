@@ -1,8 +1,12 @@
 import React from "react";
 import "./form.css";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createRecipe } from "../../redux/actions";
 
 const Form = () => {
+  const dispatch = useDispatch();
+
   //form es el contenedor de información y setForm el modificador de la información
   const [form, setForm] = useState({
     title: "",
@@ -10,7 +14,7 @@ const Form = () => {
     healthScore: 1,
     analyzedInstructions: "",
     image: "",
-    diets: [],
+    //diets: [],
   });
 
   const [errors, setErrors] = useState({
@@ -19,7 +23,7 @@ const Form = () => {
     healthScore: "The healthScore is required",
     analyzedInstructions: "The step-by-step guide is required",
     image: "The image is required",
-    diets: [],
+    //diets: [],
   });
 
   const validate = (form, name) => {
@@ -47,15 +51,18 @@ const Form = () => {
     }
 
     if (name === "summary") {
-      if (form.summary !== "") setErrors({ ...errors, summary: "" });
-      else setErrors({ ...errors, summary: "The summary is required" });
+      if (form.summary !== "") {
+        setErrors({ ...errors, summary: "" });
+      } else {
+        setErrors({ ...errors, summary: "The summary is required" });
+      }
     }
 
     if (name === "healthScore") {
       if (form.healthScore !== "") {
         if (numberRegex.test(form.healthScore)) {
           form.healthScore = parseInt(form.healthScore);
-          setErrors({ errors, healthScore: "" });
+          setErrors({ ...errors, healthScore: "" });
         } else {
           setErrors({
             ...errors,
@@ -93,6 +100,7 @@ const Form = () => {
     //Por default está deshabilitado el botón de submit
     let disabled = true;
     //Recorre el objeto errors, por cada uno chequea si hay un error
+    console.log(errors);
     for (let error in errors) {
       if (errors[error] === "") disabled = false;
       else {
@@ -120,11 +128,16 @@ const Form = () => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(createRecipe(form));
+  };
+
   return (
     <div>
       <h1>Form</h1>
       <div className="form-cont">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-inputs-cont">
             <div className="form-input-cont">
               <label>Title: </label>
@@ -137,12 +150,12 @@ const Form = () => {
             </div>
             <p className="form-p">{errors.summary}</p>
             <div className="form-input-cont">
-              <label>healthScore: </label>
+              <label>healthScore:&nbsp; </label>
               <input name="healthScore" onChange={handleChange} type="text" />
             </div>
             <p className="form-p">{errors.healthScore}</p>
             <div className="form-input-cont">
-              <label>Step by Step: </label>
+              <label>Step by Step:&nbsp; </label>
               <input
                 name="analyzedInstructions"
                 onChange={handleChange}
