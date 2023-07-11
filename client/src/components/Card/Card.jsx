@@ -10,7 +10,7 @@ const Card = (props) => {
         <Link to={`/recipes/:${props.id}`}>Title{props.title}</Link>
       </h4>
       <img src={props.image} alt="img" />
-      <p>Diet Types: </p>
+      <p>Diet Types: {props.diets} </p>
     </div>
   );
 };
