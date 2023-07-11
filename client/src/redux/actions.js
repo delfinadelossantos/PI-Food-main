@@ -18,14 +18,17 @@ export const getRecipes = () => {
     try {
       const recipes = await axios.get("http://localhost:3001/recipes/");
       dispatch({ type: GET_RECIPES, payload: recipes.data });
-    } catch (error) {}
+    } catch (error) {
+      alert("Error");
+    }
   };
 };
 
 export const createRecipe = (form) => {
   return async function (dispatch) {
     try {
-      const response = await axios.post("http://localhost:3001/recipes", form);
+      const response = await axios.post("http://localhost:3001/recipes/", form);
+      alert("Recipe was created succesfully");
       dispatch({ type: CREATE_RECIPE, payload: response });
     } catch (error) {}
   };

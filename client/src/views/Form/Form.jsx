@@ -14,7 +14,7 @@ const Form = () => {
     healthScore: 1,
     analyzedInstructions: "",
     image: "",
-    //diets: [],
+    diets: [],
   });
 
   const [errors, setErrors] = useState({
