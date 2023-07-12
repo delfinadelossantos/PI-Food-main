@@ -7,7 +7,7 @@ const Card = (props) => {
   return (
     <div key={props.id} className="card-cont">
       <h4>
-        <Link to={`/recipes/:${props.id}`}>Title{props.title}</Link>
+        <Link to={`/recipes/:${props.id}`}>{props.title}</Link>
       </h4>
       <img src={props.image} alt="img" />
       <p>Diet Types: {props.diets} </p>

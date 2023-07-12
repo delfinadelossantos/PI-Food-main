@@ -12,6 +12,7 @@ export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN";
 export const SORT_RECIPES = "SORT_RECIPES";
 export const SORT_BY_HEALTHSCORE = "SORTER_BY_HEALTHSCORE";
 export const RESET_FILTERS = "RESET FILTERS";
+export const PAGINATION = "PAGINATION";
 
 export const getRecipes = () => {
   return async function (dispatch) {
@@ -31,5 +32,14 @@ export const createRecipe = (form) => {
       alert("Recipe was created succesfully");
       dispatch({ type: CREATE_RECIPE, payload: response });
     } catch (error) {}
+  };
+};
+
+export const pagination = (order) => {
+  return async function (dispatch) {
+    dispatch({
+      type: PAGINATION,
+      payload: order,
+    });
   };
 };
