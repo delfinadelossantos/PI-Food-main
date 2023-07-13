@@ -8,7 +8,9 @@ import {
   getDiets,
   getRecipes,
   pagination,
+  sortByHealthScore,
 } from "../../redux/actions";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -24,11 +26,16 @@ const Home = () => {
   };
 
   //useSelector permite acceder al estado global sin necesidad de recibir props. Se suscribe al estado.
-  const recipes = useSelector((state) => state.recipes);
+  //const recipes = useSelector((state) => state.recipes);
 
   const diets = useSelector((state) => state.diets);
 
   const handleDiets = (event) => {};
+
+  const handleHealthScore = (event) => {
+    const order = event.target.value;
+    dispatch(sortByHealthScore(order));
+  };
 
   //Paginado global
   const recipesPagination = useSelector((state) => state.pagination);
@@ -71,10 +78,13 @@ const Home = () => {
         </select>
 
         <label>Sort by HealthScore: </label>
-        <select>
-          <option value="">Highest HealthScore</option>
-          <option value="">Lowest HealthScore</option>
+        <select onChange={handleHealthScore}>
+          <option value="desc">Highest HealthScore</option>
+          <option value="asc">Lowest HealthScore</option>
         </select>
+      </div>
+      <div>
+        <SearchBar />
       </div>
 
       <div>

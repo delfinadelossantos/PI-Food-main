@@ -63,3 +63,30 @@ export const getDiets = () => {
 };
 
 export const filterByDiet = (diet) => {};
+
+export const sortByHealthScore = (order) => {
+  return {
+    type: SORT_BY_HEALTHSCORE,
+    payload: order,
+  };
+};
+
+export const searchRecipe = (name) => {
+  return async function (dispatch) {
+    try {
+      const json = await axios.get(
+        "http://localhost:3001/recipes/?name=" + name
+      );
+      dispatch({ type: SEARCH_RECIPE, payload: json.data });
+    } catch (error) {
+      throw new Error("It seems the recipe does not exist");
+    }
+  };
+};
+
+export const getRecipeDetail = (id) => {
+  return async function (dispatch) {
+    const detail = await axios.get(`http://localhost:3001/recipes/${id}`);
+    dispatch({});
+  };
+};

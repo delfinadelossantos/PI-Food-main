@@ -4,6 +4,8 @@ import {
   GET_DIETS,
   GET_RECIPES,
   PAGINATION,
+  SEARCH_RECIPE,
+  SORT_BY_HEALTHSCORE,
 } from "./actions";
 
 const initialState = {
@@ -12,6 +14,7 @@ const initialState = {
   currentPage: 0,
   filtered: [],
   diets: [],
+  order: "desc",
 };
 
 //Cuando la aplicación recién inicia, el estado es initialState.
@@ -50,6 +53,20 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         diets: action.payload,
       };
+    case SORT_BY_HEALTHSCORE:
+      const sortedHealthScore = [...state.recipes].sort((a, b) => {
+        if (state.order === "desc") {
+          return b.healthScore - a.healthScore;
+        } else {
+          return a.healthScore - b.healthScore;
+        }
+      });
+      const newHealthScoreOrder = state.order === "desc" ? "asc" : "desc";
+      return {
+        ...state,
+        recipes: sortedHealthScore,
+        order: newHealthScoreOrder,
+      };
     case FILTER_BY_ORIGIN:
       if (action.payload === "api") {
         return {
@@ -68,6 +85,11 @@ const rootReducer = (state = initialState, action) => {
       } else {
         return { ...state };
       }
+    case SEARCH_RECIPE:
+      return {
+        ...state,
+        pagination: action.payload,
+      };
 
     default:
       return { ...state };
