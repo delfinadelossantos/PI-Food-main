@@ -43,3 +43,23 @@ export const pagination = (order) => {
     });
   };
 };
+
+export const filterByOrigin = (origin) => {
+  return async function (dispatch) {
+    dispatch({
+      type: FILTER_BY_ORIGIN,
+      payload: origin,
+    });
+  };
+};
+
+export const getDiets = () => {
+  return async function (dispatch) {
+    try {
+      const diets = await axios.get("http://localhost:3001/diets");
+      dispatch({ action: GET_DIETS, payload: diets });
+    } catch (error) {}
+  };
+};
+
+export const filterByDiet = (diet) => {};
