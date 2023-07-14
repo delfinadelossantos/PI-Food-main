@@ -4,6 +4,7 @@ import "./home.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  filterByDiet,
   filterByOrigin,
   getDiets,
   getRecipes,
@@ -20,17 +21,19 @@ const Home = () => {
     dispatch(getDiets());
   }, []);
 
-  const filterRecipesByOrigin = (event) => {
-    const origin = event.target.value;
-    dispatch(filterByOrigin(origin));
+  const handleOrigin = (event) => {
+    dispatch(filterByOrigin(event));
   };
 
   //useSelector permite acceder al estado global sin necesidad de recibir props. Se suscribe al estado.
-  //const recipes = useSelector((state) => state.recipes);
+  const recipes = useSelector((state) => state.recipes);
 
   const diets = useSelector((state) => state.diets);
 
-  const handleDiets = (event) => {};
+  const handleDiets = (event) => {
+    let diet = event.target.value;
+    dispatch(filterByDiet(diet));
+  };
 
   const handleHealthScore = (event) => {
     const order = event.target.value;
@@ -56,20 +59,20 @@ const Home = () => {
         <button onClick={nextPage}>Next</button>
 
         <label>Filter by Origin: </label>
-        <select onChange={filterRecipesByOrigin}>
+        <select onChange={(e) => handleOrigin(e)}>
           <option value="All">All</option>
           <option value="api">API</option>
           <option value="db">Database</option>
         </select>
 
         <label>Filter by Diet: </label>
-        <select value={diets} onChange={handleDiets} name="diets">
+        {/* <select value={diets} onChange={handleDiets} name="diets">
           {diets.map((diet) => (
-            <option key={diet.id} value={diet.id}>
+            <option key={diet.id} value={diet.name}>
               {diet.name}
             </option>
           ))}
-        </select>
+        </select> */}
 
         <label>Sort recipes: </label>
         <select>

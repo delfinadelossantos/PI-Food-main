@@ -1,8 +1,10 @@
 //El reducer es una función que recibe el estado a modificar y la action que indica qué tiene que hacer.
 import {
+  FILTER_BY_DIET,
   FILTER_BY_ORIGIN,
   GET_DIETS,
   GET_RECIPES,
+  GET_RECIPE_DETAIL,
   PAGINATION,
   SEARCH_RECIPE,
   SORT_BY_HEALTHSCORE,
@@ -12,9 +14,10 @@ const initialState = {
   recipes: [],
   pagination: [],
   currentPage: 0,
-  filtered: [],
   diets: [],
   order: "desc",
+  detail: [],
+  allRecipes: [],
 };
 
 //Cuando la aplicación recién inicia, el estado es initialState.
@@ -27,6 +30,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         recipes: action.payload,
+        allRecipes: action.payload,
         pagination: [...action.payload].splice(0, itemsPerPage),
       };
     case PAGINATION:
@@ -68,27 +72,36 @@ const rootReducer = (state = initialState, action) => {
         order: newHealthScoreOrder,
       };
     case FILTER_BY_ORIGIN:
-      if (action.payload === "api") {
-        return {
-          ...state,
-          filtered: [...state.recipes].filter(
-            (recipe) => recipe.createdInDb === false
-          ),
-        };
-      } else if (action.payload === "db") {
-        return {
-          ...state,
-          filtered: [...state.recipes].filter(
-            (recipe) => recipe.createdInDb === true
-          ),
-        };
-      } else {
-        return { ...state };
-      }
+      const recipeOrigin = state.allRecipes;
+      const originFilter =
+        action.payload === "db"
+          ? recipeOrigin.filter((recipe) => recipe.createdInDb === true)
+          : recipeOrigin.filter((recipe) => recipe.createdInDb === false);
+      return {
+        ...state,
+        recipes: action.payload === "All" ? state.recipeOrigin : originFilter,
+      };
     case SEARCH_RECIPE:
       return {
         ...state,
         pagination: action.payload,
+      };
+    case GET_RECIPE_DETAIL:
+      return {
+        ...state,
+        detail: action.payload,
+      };
+    case FILTER_BY_DIET:
+      const recipesFiltered = state.allRecipes;
+      const filteredByDiet =
+        action.payload === "All"
+          ? recipesFiltered
+          : recipesFiltered.filter((element) =>
+              element.diets.includes(action.payload)
+            );
+      return {
+        ...state,
+        recipes: filteredByDiet,
       };
 
     default:
