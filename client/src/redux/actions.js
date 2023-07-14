@@ -18,9 +18,10 @@ export const getRecipes = () => {
   return async function (dispatch) {
     try {
       const recipes = await axios.get("http://localhost:3001/recipes/");
-      dispatch({ type: GET_RECIPES, payload: recipes.data });
+      dispatch({ type: "GET_RECIPES", payload: recipes.data });
     } catch (error) {
       alert("Error");
+      throw new Error("API Error");
     }
   };
 };
@@ -30,15 +31,18 @@ export const createRecipe = (form) => {
     try {
       const response = await axios.post("http://localhost:3001/recipes/", form);
       alert("Recipe was created succesfully");
-      dispatch({ type: CREATE_RECIPE, payload: response });
-    } catch (error) {}
+      dispatch({ type: "CREATE_RECIPE", payload: response });
+    } catch (error) {
+      alert("Recipe could not be created");
+      throw new Error("Recipe could not be created");
+    }
   };
 };
 
 export const pagination = (order) => {
   return async function (dispatch) {
     dispatch({
-      type: PAGINATION,
+      type: "PAGINATION",
       payload: order,
     });
   };
@@ -47,7 +51,7 @@ export const pagination = (order) => {
 export const filterByOrigin = (origin) => {
   return async function (dispatch) {
     dispatch({
-      type: FILTER_BY_ORIGIN,
+      type: "FILTER_BY_ORIGIN",
       payload: origin,
     });
   };
@@ -57,19 +61,28 @@ export const getDiets = () => {
   return async function (dispatch) {
     try {
       const diets = await axios.get("http://localhost:3001/diets");
-      dispatch({ action: GET_DIETS, payload: diets });
-    } catch (error) {}
+      dispatch({ type: "GET_DIETS", payload: diets });
+    } catch (error) {
+      throw new Error("Diets not found");
+    }
   };
 };
 
-export const filterByDiet = (diet) => {};
+export const filterByDiet = (diet) => {
+  return {
+    type: "FILTER_BY_DIET",
+    payload: diet,
+  };
+};
 
 export const sortByHealthScore = (order) => {
   return {
-    type: SORT_BY_HEALTHSCORE,
+    type: "SORT_BY_HEALTHSCORE",
     payload: order,
   };
 };
+
+export const sortRecipes = () => {};
 
 export const searchRecipe = (name) => {
   return async function (dispatch) {
@@ -77,7 +90,7 @@ export const searchRecipe = (name) => {
       const json = await axios.get(
         "http://localhost:3001/recipes/?name=" + name
       );
-      dispatch({ type: SEARCH_RECIPE, payload: json.data });
+      dispatch({ type: "SEARCH_RECIPE", payload: json.data });
     } catch (error) {
       throw new Error("It seems the recipe does not exist");
     }
@@ -86,7 +99,11 @@ export const searchRecipe = (name) => {
 
 export const getRecipeDetail = (id) => {
   return async function (dispatch) {
-    const detail = await axios.get(`http://localhost:3001/recipes/${id}`);
-    dispatch({});
+    try {
+      const detail = await axios.get(`http://localhost:3001/recipes/${id}`);
+      dispatch({ type: "GET_RECIPE_DETAIL", payload: detail });
+    } catch (error) {
+      throw new Error("Detail not found");
+    }
   };
 };
