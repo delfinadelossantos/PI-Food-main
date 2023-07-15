@@ -83,7 +83,7 @@ const createRecipeController = async (
   summary,
   healthScore,
   analyzedInstructions,
-  diets
+  dietNamesFromFrontEnd
 ) => {
   const newRecipe = await Recipe.create({
     title,
@@ -93,7 +93,17 @@ const createRecipeController = async (
     analyzedInstructions,
   });
 
-  newRecipe.addDiet(diets);
+  //Busca las dietas recibidas del frontend en la base de datos:
+  let diets = await Diet.findAll({
+    where: {
+      name: dietNamesFromFrontEnd,
+    },
+  });
+
+  //Busca los id de cada dieta:
+  let dietIds = diets.map((diet) => diet.id);
+
+  await newRecipe.setDiets(dietIds);
 
   return newRecipe;
 };

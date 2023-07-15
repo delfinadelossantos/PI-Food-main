@@ -10,8 +10,6 @@ const Detail = () => {
 
   const id = idObj.id;
 
-  console.log(id);
-
   useEffect(() => {
     dispatch(getRecipeDetail(id));
   }, []);

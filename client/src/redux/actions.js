@@ -61,7 +61,7 @@ export const getDiets = () => {
   return async function (dispatch) {
     try {
       const diets = await axios.get("http://localhost:3001/diets");
-      dispatch({ type: "GET_DIETS", payload: diets });
+      dispatch({ type: "GET_DIETS", payload: diets.data });
     } catch (error) {
       throw new Error("Diets not found");
     }
