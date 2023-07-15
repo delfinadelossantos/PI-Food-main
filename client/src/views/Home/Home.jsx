@@ -22,11 +22,14 @@ const Home = () => {
   }, []);
 
   const handleOrigin = (event) => {
-    dispatch(filterByOrigin(event));
+    const origin = event.target.value;
+    dispatch(filterByOrigin(origin));
   };
 
   //useSelector permite acceder al estado global sin necesidad de recibir props. Se suscribe al estado.
   const recipes = useSelector((state) => state.recipes);
+
+  const filter = useSelector((state) => state.filter);
 
   const diets = useSelector((state) => state.diets);
 
@@ -91,7 +94,11 @@ const Home = () => {
       </div>
 
       <div>
-        <CardsContainer recipes={recipesPagination}></CardsContainer>
+        {filter ? (
+          <CardsContainer recipes={recipes}></CardsContainer>
+        ) : (
+          <CardsContainer recipes={recipesPagination}></CardsContainer>
+        )}
       </div>
     </div>
   );

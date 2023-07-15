@@ -9,6 +9,7 @@ import {
   SEARCH_RECIPE,
   SORT_BY_HEALTHSCORE,
 } from "./actions";
+const itemsPerPage = 9;
 
 const initialState = {
   recipes: [],
@@ -18,13 +19,14 @@ const initialState = {
   order: "desc",
   detail: [],
   allRecipes: [],
+  filter: false,
 };
 
 //Cuando la aplicación recién inicia, el estado es initialState.
 const rootReducer = (state = initialState, action) => {
   //El switch evalúa qué es lo que se debe hacer
   //Y en un principio tiene un caso default que es retornar una copia del estado.
-  const itemsPerPage = 9;
+
   switch (action.type) {
     case GET_RECIPES:
       return {
@@ -79,7 +81,8 @@ const rootReducer = (state = initialState, action) => {
           : recipeOrigin.filter((recipe) => recipe.createdInDb === false);
       return {
         ...state,
-        recipes: action.payload === "All" ? state.recipeOrigin : originFilter,
+        filter: true,
+        recipes: action.payload === "All" ? recipeOrigin : originFilter,
       };
     case SEARCH_RECIPE:
       return {

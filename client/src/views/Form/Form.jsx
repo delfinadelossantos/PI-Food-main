@@ -10,6 +10,7 @@ const Form = () => {
   useEffect(() => {
     dispatch(getDiets());
   }, []);
+
   //Subscripción al estado global para acceder a las diets una vez despachada la action
   const dietTypes = useSelector((state) => state.diets);
 
@@ -29,7 +30,7 @@ const Form = () => {
     healthScore: "The healthScore is required",
     analyzedInstructions: "The step-by-step guide is required",
     image: "The image is required",
-    diets: [],
+    //diets: [],
   });
 
   const validate = (form, name) => {
