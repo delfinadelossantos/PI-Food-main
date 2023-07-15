@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./form.css";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createRecipe } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { createRecipe, getDiets } from "../../redux/actions";
 
 const Form = () => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDiets());
+  }, []);
+  //Subscripción al estado global para acceder a las diets una vez despachada la action
+  const dietTypes = useSelector((state) => state.diets);
 
   //form es el contenedor de información y setForm el modificador de la información
   const [form, setForm] = useState({
@@ -23,7 +29,7 @@ const Form = () => {
     healthScore: "The healthScore is required",
     analyzedInstructions: "The step-by-step guide is required",
     image: "The image is required",
-    //diets: [],
+    diets: [],
   });
 
   const validate = (form, name) => {
@@ -111,6 +117,26 @@ const Form = () => {
     return disabled;
   };
 
+  const handleDietTypesChange = (event) => {
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+    const name = event.target.name;
+
+    if (name === "diets") {
+      setForm((prevState) => ({
+        ...prevState,
+        diets: value
+          ? [...prevState.diets, event.target.value]
+          : prevState.diets.filter((diet) => diet !== event.target.value),
+      }));
+    } else {
+      validate({ ...form, [name]: value }, name);
+      setForm({ ...form, [name]: value });
+    }
+  };
+
   //El input debe ser el reflejo del estado. Al cambiar cualquier dato en el input,
   //es necesario que se ejecute una función que cambie el estado, para que los cambios se vean reflejados.
   const handleChange = (event) => {
@@ -163,6 +189,22 @@ const Form = () => {
               />
             </div>
             <p className="form-p">{errors.analyzedInstructions}</p>
+            <div className="form-input-cont">
+              <label>Associated Diets: </label>
+              {console.log(dietTypes)}
+              {dietTypes.map((diet, index) => (
+                <div key={index}>
+                  <input
+                    id={diet.id}
+                    name="diets"
+                    type="checkbox"
+                    value={diet.name}
+                    onChange={handleDietTypesChange}
+                  />
+                  <label htmlFor={diet.name}>{diet.name}</label>
+                </div>
+              ))}
+            </div>
             <div className="form-input-cont">
               <label>Image: </label>
               <input name="image" onChange={handleChange} type="text" />
