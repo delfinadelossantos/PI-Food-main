@@ -8,6 +8,7 @@ import {
   PAGINATION,
   SEARCH_RECIPE,
   SORT_BY_HEALTHSCORE,
+  SORT_RECIPES,
 } from "./actions";
 const itemsPerPage = 9;
 
@@ -60,7 +61,8 @@ const rootReducer = (state = initialState, action) => {
         diets: action.payload,
       };
     case SORT_BY_HEALTHSCORE:
-      const sortedHealthScore = [...state.recipes].sort((a, b) => {
+      const clonedRecipes = [...state.recipes];
+      const sortedHealthScore = clonedRecipes.sort((a, b) => {
         if (state.order === "desc") {
           return b.healthScore - a.healthScore;
         } else {
@@ -95,7 +97,7 @@ const rootReducer = (state = initialState, action) => {
         detail: action.payload,
       };
     case FILTER_BY_DIET:
-      const recipesFiltered = state.allRecipes;
+      const recipesFiltered = state.recipes;
       const filteredByDiet =
         action.payload === "All"
           ? recipesFiltered
@@ -106,7 +108,16 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         recipes: filteredByDiet,
       };
-
+    case SORT_RECIPES:
+      const sortedRecipes = [...state.recipes];
+      sortedRecipes.sort((a, b) => {
+        if (action.payload === "A-Z") {
+          return a.title.localeCompare(b.title);
+        } else {
+          return b.title.localeCompare(a.title);
+        }
+      });
+      return { ...state, recipes: sortedRecipes };
     default:
       return { ...state };
   }
