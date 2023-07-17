@@ -1,0 +1,18 @@
+/* .landing {
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+} */
+.landing {
+  background-image: url("C:\Delfi\Proyectos\PI-Food-main\client\src\img\ingredients.jpg");
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-family: serif;
+  font-size: 30px;
+}

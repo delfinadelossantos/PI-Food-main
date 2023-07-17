@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import "./landing.css";
 
 const Landing = () => {
   return (
-    <div>
-      <h1>Landing page</h1>
+    <div className="landing">
+      <h1>Recipes.</h1>
       <Link to="/home">Home</Link>
     </div>
   );
