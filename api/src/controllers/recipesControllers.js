@@ -10,7 +10,7 @@ const getApiRecipes = async () => {
 
   const allApiRecipes = apiRecipesRaw.data.results.map((recipe) => {
     const diets =
-      recipe.diets.length !== 0 ? recipe.diets : "No diets available";
+      recipe.diets.length !== 0 ? recipe.diets : ["No diets available"];
     return {
       id: recipe.id,
       title: recipe.title,

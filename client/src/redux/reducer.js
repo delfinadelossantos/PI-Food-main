@@ -97,7 +97,7 @@ const rootReducer = (state = initialState, action) => {
         detail: action.payload,
       };
     case FILTER_BY_DIET:
-      const recipesFiltered = state.recipes;
+      const recipesFiltered = [...state.recipes];
       const filteredByDiet =
         action.payload === "All"
           ? recipesFiltered
