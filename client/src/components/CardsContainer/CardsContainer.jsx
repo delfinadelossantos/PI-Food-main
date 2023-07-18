@@ -5,7 +5,7 @@ import "./cardscontainer.css";
 const CardsContainer = ({ recipes }) => {
   return (
     <>
-      <h2>Recipes</h2>
+      <h2 className="cards-container-title">Recipes</h2>
       <div className="cards-container">
         {recipes.map((recipe) => {
           return (
