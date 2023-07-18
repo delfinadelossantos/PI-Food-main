@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getRecipeDetail } from "../../redux/actions";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import "./detail.css";
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -22,25 +23,76 @@ const Detail = () => {
 
   const recipe = detail.data;
 
+  console.log(recipe);
+
+  //Éste código soluciona una inconsistencia en los datos entre bd y api
+  let dietTemp;
+
+  let isArrayOfObjects = false;
+  //Proveniente de la base de datos, creado por form
+  let tryToDefine = recipe["Diets"];
+  if (tryToDefine !== undefined) {
+    console.log("Try to read with CAPS");
+    dietTemp = recipe["Diets"];
+    isArrayOfObjects = true;
+  } else {
+    //Proveniente de la API
+    console.log("Try to read without CAPS");
+    tryToDefine = recipe["diets"];
+    if (tryToDefine !== undefined) {
+      dietTemp = recipe["diets"];
+    }
+  }
+
+  console.log("Diet thing");
+  console.log(dietTemp);
+
+  //Esta función adapta los datos del formato.
+  //Si es una receta de la api, diets es un array. Si es creada en form,
+  //es un array de objetos.
+  let dietTempArray = [];
+  if (isArrayOfObjects) {
+    let i = 0;
+    dietTemp.forEach((element) => {
+      dietTempArray[i++] = element.name;
+    });
+    dietTemp = dietTempArray;
+  }
+
+  console.log("Diet thing");
+  console.log(dietTemp);
+
   return (
-    <div>
+    <div className="detail-thing">
       <h1>{recipe.title}</h1>
       <h3>Id: {recipe.id}</h3>
       <img src={recipe.image} alt="Dish" />
-      <h3>Summary: {recipe.summary}</h3>
-      <h3>
-        Step by Step:{" "}
-        {recipe.analyzedInstructions[0].steps.map((instruction) => (
+      <p>Summary: {recipe.summary}</p>
+      <br />
+      <hr />
+      <h4>Step by Step:</h4>
+      {
+        Array.isArray(recipe.analyzedInstructions) ? (
+          recipe.analyzedInstructions[0].steps.map((instruction) => (
+            <p key={instruction.number}>{instruction.step}</p>
+          ))
+        ) : (
+          <p key="0">{recipe.analyzedInstructions}</p>
+        )
+        /* {recipe.analyzedInstructions[0].steps.map((instruction) => (
           <p key={instruction.number}>{instruction.step}</p>
+        ))}*/
+      }
+      <br />
+      <hr />
+      <h4>HealthScore: {recipe.healthScore}</h4>
+      <hr />
+      <h4>Diet Types:</h4>
+      <ul>
+        {dietTemp.map((diet, index) => (
+          <li key={index}>{diet}</li>
         ))}
-      </h3>
-      <h3>HealthScore: {recipe.healthScore}</h3>
-      <h3>
-        Diet Types:{" "}
-        {recipe.diets.map((diet, index) => (
-          <p key={index}>{diet}</p>
-        ))}
-      </h3>
+      </ul>
     </div>
   );
 };
