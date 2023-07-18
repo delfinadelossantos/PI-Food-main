@@ -107,7 +107,6 @@ const Form = () => {
     //Por default está deshabilitado el botón de submit
     let disabled = true;
     //Recorre el objeto errors, por cada uno chequea si hay un error
-    console.log(errors);
     for (let error in errors) {
       if (errors[error] === "") disabled = false;
       else {
@@ -194,7 +193,6 @@ const Form = () => {
             <p className="form-p">{errors.analyzedInstructions}</p>
             <div className="form-input-cont">
               <label>Associated Diets: </label>
-              {console.log(dietTypes)}
               {dietTypes.map((diet, index) => (
                 <div className="diet-thing" key={index}>
                   <input

@@ -23,8 +23,6 @@ const Detail = () => {
 
   const recipe = detail.data;
 
-  console.log(recipe);
-
   //Éste código soluciona una inconsistencia en los datos entre bd y api
   let dietTemp;
 
@@ -32,20 +30,15 @@ const Detail = () => {
   //Proveniente de la base de datos, creado por form
   let tryToDefine = recipe["Diets"];
   if (tryToDefine !== undefined) {
-    console.log("Try to read with CAPS");
     dietTemp = recipe["Diets"];
     isArrayOfObjects = true;
   } else {
     //Proveniente de la API
-    console.log("Try to read without CAPS");
     tryToDefine = recipe["diets"];
     if (tryToDefine !== undefined) {
       dietTemp = recipe["diets"];
     }
   }
-
-  console.log("Diet thing");
-  console.log(dietTemp);
 
   //Esta función adapta los datos del formato.
   //Si es una receta de la api, diets es un array. Si es creada en form,
@@ -59,9 +52,6 @@ const Detail = () => {
     dietTemp = dietTempArray;
   }
 
-  console.log("Diet thing");
-  console.log(dietTemp);
-
   return (
     <div className="detail-thing">
       <h1>{recipe.title}</h1>
@@ -71,18 +61,13 @@ const Detail = () => {
       <br />
       <hr />
       <h4>Step by Step:</h4>
-      {
-        Array.isArray(recipe.analyzedInstructions) ? (
-          recipe.analyzedInstructions[0].steps.map((instruction) => (
-            <p key={instruction.number}>{instruction.step}</p>
-          ))
-        ) : (
-          <p key="0">{recipe.analyzedInstructions}</p>
-        )
-        /* {recipe.analyzedInstructions[0].steps.map((instruction) => (
+      {Array.isArray(recipe.analyzedInstructions) ? (
+        recipe.analyzedInstructions[0].steps.map((instruction) => (
           <p key={instruction.number}>{instruction.step}</p>
-        ))}*/
-      }
+        ))
+      ) : (
+        <p key="0">{recipe.analyzedInstructions}</p>
+      )}
       <br />
       <hr />
       <h4>HealthScore: {recipe.healthScore}</h4>

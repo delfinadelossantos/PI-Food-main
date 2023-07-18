@@ -4,8 +4,6 @@ import "./card.css";
 
 //Componente DUMB: no tiene carga de lógica, sólo es presentacional, muestra props que recibe.
 const Card = (props) => {
-  console.log(props);
-
   return (
     <div key={props.id} className="card-cont">
       <h4>
