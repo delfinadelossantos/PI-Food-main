@@ -1,9 +1,3 @@
-/* .landing {
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-} */
 .landing {
   background-image: url("C:\Delfi\Proyectos\PI-Food-main\client\src\img\ingredients.jpg");
   background-position: center;
@@ -30,11 +24,16 @@
   border-radius: 30px;
   border: 1px solid #8f9092;
   transition: all 0.2s ease;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: serif;
   font-size: 14px;
   font-weight: 600;
   color: #606060;
   text-shadow: 0 1px #fff;
+}
+
+.landing-button a {
+  text-decoration: none;
+  font-size: large;
 }
 
 .landing-button:hover {
@@ -50,4 +49,8 @@
 .landing-button:focus {
   box-shadow: 0 4px 3px 1px #fcfcfc, 0 6px 8px #d6d7d9, 0 -4px 4px #cecfd1,
     0 -6px 4px #fefefe, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+}
+
+.landing h1 {
+  text-align: center;
 }
