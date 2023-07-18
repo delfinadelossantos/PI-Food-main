@@ -162,7 +162,7 @@ const Form = () => {
 
   return (
     <div>
-      <h1>Form</h1>
+      <h1>New Recipe</h1>
       <div className="form-cont">
         <form onSubmit={handleSubmit}>
           <div className="form-inputs-cont">
@@ -173,7 +173,10 @@ const Form = () => {
             <p className="form-p">{errors.title}</p>
             <div className="form-input-cont">
               <label>Summary: </label>
-              <input name="summary" onChange={handleChange} type="text" />
+              <textarea
+                name="summary"
+                onChange={handleChange}
+                rows={2}></textarea>
             </div>
             <p className="form-p">{errors.summary}</p>
             <div className="form-input-cont">
@@ -183,18 +186,17 @@ const Form = () => {
             <p className="form-p">{errors.healthScore}</p>
             <div className="form-input-cont">
               <label>Step by Step:&nbsp; </label>
-              <input
+              <textarea
                 name="analyzedInstructions"
                 onChange={handleChange}
-                type="text"
-              />
+                rows={4}></textarea>
             </div>
             <p className="form-p">{errors.analyzedInstructions}</p>
             <div className="form-input-cont">
               <label>Associated Diets: </label>
               {console.log(dietTypes)}
               {dietTypes.map((diet, index) => (
-                <div key={index}>
+                <div className="diet-thing" key={index}>
                   <input
                     id={diet.id}
                     name="diets"
@@ -211,7 +213,9 @@ const Form = () => {
               <input name="image" onChange={handleChange} type="text" />
             </div>
             <p className="form-p">{errors.image}</p>
-            <input disabled={buttonDisabled()} type="submit" />
+            <button disabled={buttonDisabled()} type="submit">
+              Create
+            </button>
           </div>
         </form>
       </div>

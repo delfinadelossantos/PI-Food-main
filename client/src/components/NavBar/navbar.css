@@ -2,10 +2,18 @@
   border: solid 1px #373f51;
   background-color: #373f51;
   height: 3rem;
+  display: absolute;
+  margin: 0 auto 0;
+  width: 100%;
 }
 
 .link-container {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.link-container * {
+  margin-top: 10px;
+  color: white;
 }

@@ -1,20 +1,86 @@
+.form-cont h1 {
+  margin: 1rem auto 0;
+  text-align: center;
+}
+
 .form-cont {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+  width: 40%;
+  margin: 0 auto 0;
 }
 
 .form-input-cont {
+  background-color: #a9bcd0;
+  height: auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   margin: 1rem;
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  border-radius: 1rem;
+}
+
+.form-input-cont label {
+  position: relative;
+  float: left;
+  text-align: left;
+  color: white;
+  font-weight: 500;
+  font-size: 1.5rem;
+  width: 100%;
+  margin-left: 3rem;
+  margin-bottom: 1rem;
+}
+
+.form-input-cont input {
+  position: relative;
+  float: left;
+  border-radius: 1rem;
+  border: none;
+  height: 2rem;
+  width: 80%;
+}
+
+.diet-thing {
+  position: relative;
+  float: left;
+  padding-left: 1rem;
+  margin: 0;
+  width: 40%;
+  text-align: center;
+}
+
+.diet-thing input {
+  position: absolute;
+  margin-right: 0rem;
+  margin-left: 2rem;
+  width: 10%;
+}
+
+.diet-thing label {
+  font-size: 1rem !important;
+  width: 60%;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  margin: 0;
+}
+
+.form-input-cont textarea {
+  width: 80%;
 }
 
 .form-inputs-cont {
-  text-align: center;
 }
 
 .form-p {
   color: red;
+}
+
+.form-inputs-cont button {
+  width: 93%;
+  height: 3rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
 }
