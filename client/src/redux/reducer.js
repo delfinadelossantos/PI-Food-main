@@ -50,6 +50,7 @@ const rootReducer = (state = initialState, action) => {
       } else if (action.payload === "prev" && prevPage < 0) {
         return { ...state };
       }
+
       return {
         ...state,
         pagination: [...state.recipes].splice(firstIndex, itemsPerPage),
@@ -74,9 +75,10 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         recipes: sortedHealthScore,
         order: newHealthScoreOrder,
+        filter: true,
       };
     case FILTER_BY_ORIGIN:
-      const recipeOrigin = state.allRecipes;
+      const recipeOrigin = [...state.allRecipes];
       const originFilter =
         action.payload === "db"
           ? recipeOrigin.filter((recipe) => recipe.createdInDb === true)
@@ -107,6 +109,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         recipes: filteredByDiet,
+        filter: true,
       };
     case SORT_RECIPES:
       const sortedRecipes = [...state.recipes];
@@ -117,7 +120,7 @@ const rootReducer = (state = initialState, action) => {
           return b.title.localeCompare(a.title);
         }
       });
-      return { ...state, recipes: sortedRecipes };
+      return { ...state, recipes: sortedRecipes, filter: true };
     default:
       return { ...state };
   }

@@ -93,6 +93,9 @@ const Home = () => {
             <div className="filter-item">
               <label>Sort recipes:</label>
               <select onChange={handleSort}>
+                <option defaultChecked value="0">
+                  Select order
+                </option>
                 <option value="A-Z">From A to Z</option>
                 <option value="Z-A">From Z to A</option>
               </select>
@@ -100,6 +103,9 @@ const Home = () => {
             <div className="filter-item">
               <label>Sort by HealthScore:</label>
               <select onChange={handleHealthScore}>
+                <option defaultChecked value="0">
+                  Select order
+                </option>
                 <option value="desc">Highest HealthScore</option>
                 <option value="asc">Lowest HealthScore</option>
               </select>
