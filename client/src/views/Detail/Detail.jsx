@@ -57,7 +57,8 @@ const Detail = () => {
       <h1>{recipe.title}</h1>
       <h3>Id: {recipe.id}</h3>
       <img src={recipe.image} alt="Dish" />
-      <p>Summary: {recipe.summary}</p>
+      <h4>Summary: </h4>
+      <p>{recipe.summary.replace(/(&nbsp;|<([^>]+)>)/gi, "")}</p>
       <br />
       <hr />
       <h4>Step by Step:</h4>
