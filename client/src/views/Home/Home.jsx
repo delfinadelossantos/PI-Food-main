@@ -34,8 +34,7 @@ const Home = () => {
   };
 
   const handleOrigin = (event) => {
-    const origin = event.target.value;
-    dispatch(filterByOrigin(origin));
+    dispatch(filterByOrigin(event.target.value));
   };
 
   const handleHealthScore = (event) => {
@@ -44,6 +43,10 @@ const Home = () => {
 
   const handleSort = (event) => {
     dispatch(sortRecipes(event.target.value));
+  };
+
+  const handleClear = (event) => {
+    dispatch(getRecipes());
   };
 
   //Paginado global
@@ -93,7 +96,7 @@ const Home = () => {
             <div className="filter-item">
               <label>Sort recipes:</label>
               <select onChange={handleSort}>
-                <option defaultChecked value="0">
+                <option defaultChecked value="">
                   Select order
                 </option>
                 <option value="A-Z">From A to Z</option>
@@ -103,12 +106,15 @@ const Home = () => {
             <div className="filter-item">
               <label>Sort by HealthScore:</label>
               <select onChange={handleHealthScore}>
-                <option defaultChecked value="0">
+                <option defaultChecked value="">
                   Select order
                 </option>
                 <option value="desc">Highest HealthScore</option>
                 <option value="asc">Lowest HealthScore</option>
               </select>
+            </div>
+            <div className="clear-filters">
+              <button onClick={handleClear}>Clear Filters</button>
             </div>
           </div>
         </div>

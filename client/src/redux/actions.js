@@ -11,7 +11,6 @@ export const FILTER_BY_DIET = "FILTER_BY_DIET";
 export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN";
 export const SORT_RECIPES = "SORT_RECIPES";
 export const SORT_BY_HEALTHSCORE = "SORT_BY_HEALTHSCORE";
-export const RESET_FILTERS = "RESET FILTERS";
 export const PAGINATION = "PAGINATION";
 
 export const getRecipes = () => {
@@ -49,11 +48,9 @@ export const pagination = (order) => {
 };
 
 export const filterByOrigin = (origin) => {
-  return async function (dispatch) {
-    dispatch({
-      type: "FILTER_BY_ORIGIN",
-      payload: origin,
-    });
+  return {
+    type: "FILTER_BY_ORIGIN",
+    payload: origin,
   };
 };
 
