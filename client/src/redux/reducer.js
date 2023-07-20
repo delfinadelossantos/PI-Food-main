@@ -1,5 +1,6 @@
 //El reducer es una función que recibe el estado a modificar y la action que indica qué tiene que hacer.
 import {
+  CLEAN_DETAIL,
   FILTER_BY_DIET,
   FILTER_BY_ORIGIN,
   GET_DIETS,
@@ -97,6 +98,8 @@ const rootReducer = (state = initialState, action) => {
         }
       });
       return { ...state, recipes: sortedRecipes, filter: true };
+    case CLEAN_DETAIL:
+      return { ...state, detail: [] };
     default:
       return { ...state };
   }

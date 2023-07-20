@@ -11,6 +11,7 @@ export const FILTER_BY_DIET = "FILTER_BY_DIET";
 export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN";
 export const SORT_RECIPES = "SORT_RECIPES";
 export const SORT_BY_HEALTHSCORE = "SORT_BY_HEALTHSCORE";
+export const CLEAN_DETAIL = "CLEAN_DETAIL";
 
 export const getRecipes = () => {
   return async function (dispatch) {
@@ -98,6 +99,10 @@ export const getRecipeDetail = (id) => {
       throw new Error("Detail not found");
     }
   };
+};
+
+export const cleanDetail = () => {
+  return { type: "CLEAN_DETAIL" };
 };
 
 // export const pagination = (order) => {
