@@ -12,6 +12,7 @@ export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN";
 export const SORT_RECIPES = "SORT_RECIPES";
 export const SORT_BY_HEALTHSCORE = "SORT_BY_HEALTHSCORE";
 export const CLEAN_DETAIL = "CLEAN_DETAIL";
+export const RESET_FILTERS = "RESET_FILTERS";
 
 export const getRecipes = () => {
   return async function (dispatch) {
@@ -103,6 +104,10 @@ export const getRecipeDetail = (id) => {
 
 export const cleanDetail = () => {
   return { type: "CLEAN_DETAIL" };
+};
+
+export const resetFilters = () => {
+  return { type: "RESET_FILTERS" };
 };
 
 // export const pagination = (order) => {

@@ -30,7 +30,7 @@ const Form = () => {
     healthScore: "The healthScore is required",
     analyzedInstructions: "The step-by-step guide is required",
     image: "The image is required",
-    //diets: [],
+    diets: "Please choose at least one diet",
   });
 
   const validate = (form, name) => {
@@ -99,8 +99,15 @@ const Form = () => {
       if (form.image !== "") setErrors({ ...errors, image: "" });
       else setErrors({ ...errors, image: "The image is required" });
     }
-  };
 
+    if (name === "diets") {
+      console.log("Diets thing");
+      console.log(form.diets);
+
+      if (form.diets.length >= 1) setErrors({ ...errors, diets: "" });
+      else setErrors({ ...errors, diets: "Please choose at least one diet" });
+    }
+  };
   //Recorre el estado local de errores y chequea todas las propiedades para ver si hay errores.
   //Si hay un error, el botón de submit queda deshabilitado.
   const buttonDisabled = () => {
@@ -115,26 +122,6 @@ const Form = () => {
       }
     }
     return disabled;
-  };
-
-  const handleDietTypesChange = (event) => {
-    const value =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
-    const name = event.target.name;
-
-    if (name === "diets") {
-      setForm((prevState) => ({
-        ...prevState,
-        diets: value
-          ? [...prevState.diets, event.target.value]
-          : prevState.diets.filter((diet) => diet !== event.target.value),
-      }));
-    } else {
-      validate({ ...form, [name]: value }, name);
-      setForm({ ...form, [name]: value });
-    }
   };
 
   //El input debe ser el reflejo del estado. Al cambiar cualquier dato en el input,
@@ -155,8 +142,24 @@ const Form = () => {
   };
 
   const handleSubmit = (event) => {
+    console.log(event);
+
     event.preventDefault();
     dispatch(createRecipe(form));
+
+    // Limpiar el formulario
+    const f = event.target;
+    let i = 0;
+    while (i < 15) {
+      let cursor = f[i];
+      if (cursor.checked !== null) {
+        f[i].checked = false;
+      }
+
+      f[i].value = "";
+
+      i++;
+    }
   };
 
   return (
@@ -200,12 +203,13 @@ const Form = () => {
                     name="diets"
                     type="checkbox"
                     value={diet.name}
-                    onChange={handleDietTypesChange}
+                    onChange={handleChange}
                   />
                   <label htmlFor={diet.name}>{diet.name}</label>
                 </div>
               ))}
             </div>
+            <p className="form-p">{errors.diets}</p>
             <div className="form-input-cont">
               <label>Image: </label>
               <input name="image" onChange={handleChange} type="text" />

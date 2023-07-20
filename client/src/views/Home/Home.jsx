@@ -9,6 +9,7 @@ import {
   filterByOrigin,
   getDiets,
   getRecipes,
+  resetFilters,
   sortByHealthScore,
   sortRecipes,
 } from "../../redux/actions";
@@ -75,7 +76,7 @@ const Home = () => {
   };
 
   const handleClear = (event) => {
-    dispatch(getRecipes());
+    dispatch(resetFilters());
   };
 
   return (

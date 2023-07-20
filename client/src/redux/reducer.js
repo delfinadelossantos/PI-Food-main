@@ -6,6 +6,7 @@ import {
   GET_DIETS,
   GET_RECIPES,
   GET_RECIPE_DETAIL,
+  RESET_FILTERS,
   SEARCH_RECIPE,
   SORT_BY_HEALTHSCORE,
   SORT_RECIPES,
@@ -13,12 +14,10 @@ import {
 
 const initialState = {
   recipes: [],
-  currentPage: 0,
   diets: [],
   order: "desc",
   detail: [],
   allRecipes: [],
-  filter: false,
 };
 
 //Cuando la aplicación recién inicia, el estado es initialState.
@@ -52,7 +51,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         recipes: sortedHealthScore,
         order: newHealthScoreOrder,
-        filter: true,
       };
     case FILTER_BY_ORIGIN:
       const recipeOrigin = [...state.allRecipes];
@@ -62,7 +60,6 @@ const rootReducer = (state = initialState, action) => {
           : recipeOrigin.filter((recipe) => recipe.createdInDb === false);
       return {
         ...state,
-        filter: true,
         recipes: action.payload === "All" ? recipeOrigin : originFilter,
       };
     case SEARCH_RECIPE:
@@ -86,7 +83,6 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         recipes: filteredByDiet,
-        filter: true,
       };
     case SORT_RECIPES:
       const sortedRecipes = [...state.recipes];
@@ -97,9 +93,15 @@ const rootReducer = (state = initialState, action) => {
           return b.title.localeCompare(a.title);
         }
       });
-      return { ...state, recipes: sortedRecipes, filter: true };
+      return { ...state, recipes: sortedRecipes };
     case CLEAN_DETAIL:
       return { ...state, detail: [] };
+    case RESET_FILTERS:
+      return {
+        ...state,
+        recipes: [...state.allRecipes],
+        order: "desc",
+      };
     default:
       return { ...state };
   }
