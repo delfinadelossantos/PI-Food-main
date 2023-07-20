@@ -11,7 +11,6 @@ export const FILTER_BY_DIET = "FILTER_BY_DIET";
 export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN";
 export const SORT_RECIPES = "SORT_RECIPES";
 export const SORT_BY_HEALTHSCORE = "SORT_BY_HEALTHSCORE";
-export const PAGINATION = "PAGINATION";
 
 export const getRecipes = () => {
   return async function (dispatch) {
@@ -35,15 +34,6 @@ export const createRecipe = (form) => {
       alert("Recipe could not be created");
       throw new Error("Recipe could not be created");
     }
-  };
-};
-
-export const pagination = (order) => {
-  return async function (dispatch) {
-    dispatch({
-      type: "PAGINATION",
-      payload: order,
-    });
   };
 };
 
@@ -109,3 +99,12 @@ export const getRecipeDetail = (id) => {
     }
   };
 };
+
+// export const pagination = (order) => {
+//   return async function (dispatch) {
+//     dispatch({
+//       type: "PAGINATION",
+//       payload: order,
+//     });
+//   };
+// };

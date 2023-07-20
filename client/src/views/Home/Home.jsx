@@ -3,12 +3,12 @@ import CardsContainer from "../../components/CardsContainer/CardsContainer";
 import "./home.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import {
   filterByDiet,
   filterByOrigin,
   getDiets,
   getRecipes,
-  pagination,
   sortByHealthScore,
   sortRecipes,
 } from "../../redux/actions";
@@ -25,9 +25,38 @@ const Home = () => {
   //useSelector permite acceder al estado global sin necesidad de recibir props. Se suscribe al estado.
   const recipes = useSelector((state) => state.recipes);
 
-  const filter = useSelector((state) => state.filter);
-
   const diets = useSelector((state) => state.diets);
+
+  //----------------Paginado--------------------
+  const itemsPerPage = 9; //Cantidad de recetas por página
+  //useState da un estado y una función para controlarlo.
+  const [items, setItems] = useState([...recipes].splice(0, itemsPerPage));
+  const [currentPage, setCurrentPage] = useState(0);
+  console.log([...recipes].splice(0, itemsPerPage));
+
+  const prevPage = () => {
+    const prev_page = currentPage - 1;
+    const firstIndex = prev_page * itemsPerPage;
+    if (prev_page < 0) return; //Caso de corte: que la página anterior sea menor a cero.
+    setItems([...recipes].splice(firstIndex, itemsPerPage));
+    setCurrentPage(prev_page);
+  };
+
+  const nextPage = () => {
+    const next_page = currentPage + 1;
+    const firstIndex = next_page * itemsPerPage;
+    if (firstIndex >= recipes.length) return; //Caso de corte: si llega al final de los ítems, no sigue paginando.
+    setItems([...recipes].splice(firstIndex, itemsPerPage));
+    setCurrentPage(next_page);
+  };
+
+  //El paginado se establece a partir de una copia de recipes cuando se renderiza el componente. Pero en una primera
+  //instancia, ni bien se monta el componente, recipes está vacío (hasta que hace la petición)
+  //Este segundo useEffect está atento al estado global de recipes. Cuando esté lleno,
+  //setItems se llena con lo mismo que recibe items inicialmente.
+  useEffect(() => {
+    setItems([...recipes].splice(0, itemsPerPage));
+  }, [recipes]);
 
   const handleDiets = (event) => {
     dispatch(filterByDiet(event.target.value));
@@ -49,17 +78,6 @@ const Home = () => {
     dispatch(getRecipes());
   };
 
-  //Paginado global
-  const recipesPagination = useSelector((state) => state.pagination);
-
-  const nextPage = () => {
-    dispatch(pagination("next"));
-  };
-
-  const prevPage = () => {
-    dispatch(pagination("prev"));
-  };
-
   return (
     <div className="home-cont">
       <h1>Home</h1>
@@ -75,7 +93,7 @@ const Home = () => {
               </div>
               <div className="filter-item-bottom">
                 <select onChange={(e) => handleOrigin(e)}>
-                  <option value="All">All</option>
+                  <option defaultValue="All">All</option>
                   <option value="api">API</option>
                   <option value="db">Database</option>
                 </select>
@@ -84,7 +102,7 @@ const Home = () => {
             <div className="filter-item">
               <label>Filter by Diet:</label>
               <select value={diets} onChange={handleDiets} name="diets">
-                <option value="">Select a diet</option>
+                <option defaultValue="">Select a diet</option>
                 {diets.map((diet) => (
                   <option key={diet.id} value={diet.name}>
                     {diet.name}
@@ -96,9 +114,7 @@ const Home = () => {
             <div className="filter-item">
               <label>Sort recipes:</label>
               <select onChange={handleSort}>
-                <option defaultChecked value="">
-                  Select order
-                </option>
+                <option defaultValue="">Select order</option>
                 <option value="A-Z">From A to Z</option>
                 <option value="Z-A">From Z to A</option>
               </select>
@@ -106,9 +122,7 @@ const Home = () => {
             <div className="filter-item">
               <label>Sort by HealthScore:</label>
               <select onChange={handleHealthScore}>
-                <option defaultChecked value="">
-                  Select order
-                </option>
+                <option defaultValue="">Select order</option>
                 <option value="desc">Highest HealthScore</option>
                 <option value="asc">Lowest HealthScore</option>
               </select>
@@ -126,14 +140,28 @@ const Home = () => {
         </div>
       </div>
       <div>
-        {filter ? (
-          <CardsContainer recipes={recipes}></CardsContainer>
-        ) : (
-          <CardsContainer recipes={recipesPagination}></CardsContainer>
-        )}
+        <CardsContainer recipes={items}></CardsContainer>
       </div>
     </div>
   );
 };
 
 export default Home;
+
+//   //Paginado global
+//   const filter = useSelector((state) => state.filter);
+//   const recipesPagination = useSelector((state) => state.pagination);
+
+//   const nextPage = () => {
+//     dispatch(pagination("next"));
+//   };
+
+//   const prevPage = () => {
+//     dispatch(pagination("prev"));
+//   };
+
+//   {filter ? (
+//     <CardsContainer recipes={items}></CardsContainer>
+//     ) : (
+//        <CardsContainer recipes={recipesPagination}></CardsContainer>
+//      )}

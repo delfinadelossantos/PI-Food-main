@@ -5,16 +5,13 @@ import {
   GET_DIETS,
   GET_RECIPES,
   GET_RECIPE_DETAIL,
-  PAGINATION,
   SEARCH_RECIPE,
   SORT_BY_HEALTHSCORE,
   SORT_RECIPES,
 } from "./actions";
-const itemsPerPage = 9;
 
 const initialState = {
   recipes: [],
-  pagination: [],
   currentPage: 0,
   diets: [],
   order: "desc",
@@ -34,27 +31,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         recipes: action.payload,
         allRecipes: action.payload,
-        pagination: [...action.payload].splice(0, itemsPerPage),
-      };
-    case PAGINATION:
-      const nextPage = state.currentPage + 1;
-      const prevPage = state.currentPage - 1;
-
-      const firstIndex =
-        action.payload === "next"
-          ? nextPage * itemsPerPage
-          : prevPage * itemsPerPage;
-
-      if (action.payload === "next" && firstIndex >= state.recipes.length) {
-        return { ...state };
-      } else if (action.payload === "prev" && prevPage < 0) {
-        return { ...state };
-      }
-
-      return {
-        ...state,
-        pagination: [...state.recipes].splice(firstIndex, itemsPerPage),
-        currentPage: action.payload === "next" ? nextPage : prevPage,
       };
     case GET_DIETS:
       return {
@@ -91,7 +67,7 @@ const rootReducer = (state = initialState, action) => {
     case SEARCH_RECIPE:
       return {
         ...state,
-        pagination: action.payload,
+        recipe: action.payload,
       };
     case GET_RECIPE_DETAIL:
       return {
@@ -127,3 +103,25 @@ const rootReducer = (state = initialState, action) => {
 };
 
 export default rootReducer;
+
+// const itemsPerPage = 9;
+// case PAGINATION:
+//   const nextPage = state.currentPage + 1;
+//   const prevPage = state.currentPage - 1;
+
+//   const firstIndex =
+//     action.payload === "next"
+//       ? nextPage * itemsPerPage
+//       : prevPage * itemsPerPage;
+
+//   if (action.payload === "next" && firstIndex >= state.recipes.length) {
+//     return { ...state };
+//   } else if (action.payload === "prev" && prevPage < 0) {
+//     return { ...state };
+//   }
+
+//   return {
+//     ...state,
+//     pagination: [...state.recipes].splice(firstIndex, itemsPerPage),
+//     currentPage: action.payload === "next" ? nextPage : prevPage,
+//   };
