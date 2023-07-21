@@ -60,24 +60,38 @@ const Home = () => {
     setItems([...recipes].splice(0, itemsPerPage));
   }, [recipes]);
 
+  // ----------- Manejo de filtros y ordenamientos -------
+  const [selectedDiet, setSelectedDiet] = useState("");
+  const [selectedOrigin, setSelectedOrigin] = useState("All");
+  const [selectedSort, setSelectedSort] = useState("");
+  const [selectedHealthScore, setSelectedHealthScore] = useState("");
+
   const handleDiets = (event) => {
     dispatch(filterByDiet(event.target.value));
+    setSelectedDiet(event.target.value);
   };
 
   const handleOrigin = (event) => {
     dispatch(filterByOrigin(event.target.value));
+    setSelectedOrigin(event.target.value);
   };
 
   const handleHealthScore = (event) => {
     dispatch(sortByHealthScore(event.target.value));
+    setSelectedHealthScore(event.target.value);
   };
 
   const handleSort = (event) => {
     dispatch(sortRecipes(event.target.value));
+    setSelectedSort(event.target.value);
   };
 
   const handleClear = (event) => {
     dispatch(resetFilters());
+    setSelectedDiet("");
+    setSelectedOrigin("All");
+    setSelectedSort("");
+    setSelectedHealthScore("");
   };
 
   return (
@@ -94,8 +108,10 @@ const Home = () => {
                 <label>Filter by Origin:</label>
               </div>
               <div className="filter-item-bottom">
-                <select onChange={(e) => handleOrigin(e)}>
-                  <option defaultValue="All">All</option>
+                <select
+                  onChange={(e) => handleOrigin(e)}
+                  value={selectedOrigin}>
+                  <option value="All">All</option>
                   <option value="api">API</option>
                   <option value="db">Database</option>
                 </select>
@@ -103,7 +119,7 @@ const Home = () => {
             </div>
             <div className="filter-item">
               <label>Filter by Diet:</label>
-              <select value={diets} onChange={handleDiets} name="diets">
+              <select value={selectedDiet} onChange={handleDiets} name="diets">
                 <option defaultValue="">Select a diet</option>
                 {diets.map((diet) => (
                   <option key={diet.id} value={diet.name}>
@@ -115,7 +131,7 @@ const Home = () => {
 
             <div className="filter-item">
               <label>Sort recipes:</label>
-              <select onChange={handleSort}>
+              <select onChange={handleSort} value={selectedSort}>
                 <option defaultValue="">Select order</option>
                 <option value="A-Z">From A to Z</option>
                 <option value="Z-A">From Z to A</option>
@@ -123,7 +139,7 @@ const Home = () => {
             </div>
             <div className="filter-item">
               <label>Sort by HealthScore:</label>
-              <select onChange={handleHealthScore}>
+              <select onChange={handleHealthScore} value={selectedHealthScore}>
                 <option defaultValue="">Select order</option>
                 <option value="desc">Highest HealthScore</option>
                 <option value="asc">Lowest HealthScore</option>

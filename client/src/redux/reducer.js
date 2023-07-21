@@ -100,7 +100,6 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         recipes: [...state.allRecipes],
-        order: "desc",
       };
     default:
       return { ...state };
