@@ -14,6 +14,7 @@ import {
   sortRecipes,
 } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import Footer from "../../components/Footer/Footer";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -142,6 +143,9 @@ const Home = () => {
       </div>
       <div>
         <CardsContainer recipes={items}></CardsContainer>
+      </div>
+      <div className="footer-cont">
+        <Footer></Footer>
       </div>
     </div>
   );

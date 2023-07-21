@@ -103,3 +103,9 @@
   margin-bottom: 1rem;
   text-align: center;
 }
+
+.footer-cont {
+  display: absolute;
+  margin: 0 auto 0;
+  width: 100%;
+}
