@@ -150,22 +150,31 @@ const Form = () => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(createRecipe(form));
+    console.log(event);
 
     // Limpiar el formulario
-    // const f = event.target;
-    // let i = 0;
-    // while (i < 15) {
-    //   let cursor = f[i];
-    //   if (cursor.checked !== null) {
-    //     f[i].checked = false;
-    //   }
+    const f = event.target;
+    let i = 0;
+    while (i < 6) {
+      let cursor = f[i];
 
-    //   f[i].value = "";
+      if (cursor.localName === "select") {
+        let j = 0;
+        while (j < 10) {
+          cursor[j].selected = false;
+          j++;
+        }
+      } else if (cursor.localName === "input") {
+        cursor.value = "";
+      } else if (cursor.localName === "textarea") {
+        cursor.value = "";
+      }
 
-    //   i++;
-    // }
+      i++;
+    }
+
+    event.preventDefault();
+    dispatch(createRecipe(form));
   };
 
   return (

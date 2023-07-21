@@ -146,7 +146,7 @@ const Home = () => {
               </select>
             </div>
             <div className="clear-filters">
-              <button onClick={handleClear}>Clear Filters</button>
+              <button onClick={handleClear}>Clear</button>
             </div>
           </div>
         </div>

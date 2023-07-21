@@ -84,3 +84,16 @@
   border-radius: 1rem;
   margin-bottom: 2rem;
 }
+
+.form-input-cont select {
+  width: 80%;
+  border-radius: 1rem;
+}
+
+.form-input-cont option {
+  padding: 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  color: #404040;
+}
