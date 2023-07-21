@@ -91,6 +91,7 @@ const createRecipeController = async (
     summary,
     healthScore,
     analyzedInstructions,
+    diets: dietNamesFromFrontEnd,
   });
 
   //Busca las dietas recibidas del frontend en la base de datos:

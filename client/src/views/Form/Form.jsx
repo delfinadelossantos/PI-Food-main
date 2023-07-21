@@ -101,13 +101,11 @@ const Form = () => {
     }
 
     if (name === "diets") {
-      console.log("Diets thing");
-      console.log(form.diets);
-
       if (form.diets.length >= 1) setErrors({ ...errors, diets: "" });
       else setErrors({ ...errors, diets: "Please choose at least one diet" });
     }
   };
+
   //Recorre el estado local de errores y chequea todas las propiedades para ver si hay errores.
   //Si hay un error, el botón de submit queda deshabilitado.
   const buttonDisabled = () => {
@@ -129,37 +127,45 @@ const Form = () => {
   const handleChange = (event) => {
     //Esta función lee los inputs y pasa su data al Estado.
     //event.target indica qué input disparó el evento.
-
-    //La función validadora recibe lo mismo que se le pasa al setForm como primer argumento
-    validate(
-      { ...form, [event.target.name]: event.target.value },
-      event.target.name
-    );
-
-    //Una vez que tenga los valores, necesito modificar el estado en aquella
-    //propiedad que se haya cambiado con el valor indicado
-    setForm({ ...form, [event.target.name]: event.target.value });
+    // Extrae el nombre y el valor del campo que disparó el evento.
+    const { name, value } = event.target;
+    // Se comprueba si el nombre del campo es "diets". Si es asi se maneja de manera especial.
+    if (name === "diets") {
+      // Para un input de selección múltiple, event.target.selectedOptions es un objeto de opciones seleccionadas
+      // Se convierte en un array y luego se mapea para extraer los valores.
+      const multipleValues = [...event.target.selectedOptions].map(
+        (option) => option.value
+      );
+      //La función validadora recibe lo mismo que se le pasa al setForm como primer argumento
+      //Una vez que tenga los valores, necesito modificar el estado en aquella
+      //propiedad que se haya cambiado con el valor indicado
+      // Ejecución de la función de validación y actualización del estado del formulario
+      validate({ ...form, [name]: multipleValues }, name);
+      setForm({ ...form, [name]: multipleValues });
+    } else {
+      // Para todos los demás campos del formulario
+      validate({ ...form, [name]: value }, name);
+      setForm({ ...form, [name]: value });
+    }
   };
 
   const handleSubmit = (event) => {
-    console.log(event);
-
     event.preventDefault();
     dispatch(createRecipe(form));
 
     // Limpiar el formulario
-    const f = event.target;
-    let i = 0;
-    while (i < 15) {
-      let cursor = f[i];
-      if (cursor.checked !== null) {
-        f[i].checked = false;
-      }
+    // const f = event.target;
+    // let i = 0;
+    // while (i < 15) {
+    //   let cursor = f[i];
+    //   if (cursor.checked !== null) {
+    //     f[i].checked = false;
+    //   }
 
-      f[i].value = "";
+    //   f[i].value = "";
 
-      i++;
-    }
+    //   i++;
+    // }
   };
 
   return (
@@ -173,6 +179,7 @@ const Form = () => {
               <input name="title" onChange={handleChange} type="text" />
             </div>
             <p className="form-p">{errors.title}</p>
+
             <div className="form-input-cont">
               <label>Summary: </label>
               <textarea
@@ -181,11 +188,13 @@ const Form = () => {
                 rows={2}></textarea>
             </div>
             <p className="form-p">{errors.summary}</p>
+
             <div className="form-input-cont">
               <label>healthScore:&nbsp; </label>
               <input name="healthScore" onChange={handleChange} type="text" />
             </div>
             <p className="form-p">{errors.healthScore}</p>
+
             <div className="form-input-cont">
               <label>Step by Step:&nbsp; </label>
               <textarea
@@ -194,22 +203,24 @@ const Form = () => {
                 rows={4}></textarea>
             </div>
             <p className="form-p">{errors.analyzedInstructions}</p>
+
             <div className="form-input-cont">
-              <label>Associated Diets: </label>
-              {dietTypes.map((diet, index) => (
-                <div className="diet-thing" key={index}>
-                  <input
-                    id={diet.id}
-                    name="diets"
-                    type="checkbox"
-                    value={diet.name}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor={diet.name}>{diet.name}</label>
-                </div>
-              ))}
+              <label>Select Associated Diets: </label>
+              <select
+                value={form.diets}
+                onChange={handleChange}
+                name="diets"
+                multiple>
+                {dietTypes.map((diet) => (
+                  <option key={diet.id} value={diet.name}>
+                    {diet.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <p className="form-p">{errors.diets}</p>
+            <h4>Diets selected: {form.diets}</h4>
+
             <div className="form-input-cont">
               <label>Image: </label>
               <input name="image" onChange={handleChange} type="text" />
